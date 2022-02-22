@@ -1,0 +1,153 @@
+---
+title: "Lab 3: F Tests or Multiple Comparisons"
+subtitle: "STAT 242: Intermediate Statistics"
+author: "YOUR NAME HERE"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# F Tests
+
+## Goals
+
+The goal in this lab is to practice F tests for ANOVA and to practice multiple comparisons
+
+## Loading packages
+
+Here are some packages with functionality you may need for this lab.  Run this code chunk now.
+
+```{r}
+library(readr)
+library(ggplot2)
+library(gridExtra)
+library(mosaic)
+library(dplyr)
+library(gmodels)
+library(Sleuth3)
+library(gmodels)
+
+options("pillar.sigfig" = 10) # print 10 significant digits in summarize output
+```
+
+A study was conducted to examine the effectiveness of four different hand-washing methods for eliminating bacteria.
+
+```{r}
+soap <- read_csv("https://raw.githubusercontent.com/marievozanne/marievozanne.github.io/master/stat242/datasets/soap.csv")
+names(soap) <- c("bacterial_counts", "method")
+
+soap %>%
+  count(method)
+```
+
+**1. Make an appropriate plot of the data.**
+
+```{r}
+
+```
+
+**2. Conduct a test of the claim that all four methods are equally effective. How many degrees of freedom does the full model have? What are the extra degrees of freedom?**
+
+```{r}
+
+```
+
+**3. Conduct a test of the claim that the "Alcohol Spray" is as effective as "Antibacterial Soap", "Soap", and "Water" methods are, on average. How many degrees of freedom does the full model have? What are the extra degrees of freedom?**
+
+```{r}
+
+```
+
+# Multiple Comparisons
+
+**4. Find the multiplier that would be used for Bonferroni 95% familywise intervals for 4 pairwise comparisons based on this data set.** 
+
+```{r}
+
+```
+
+**5. Find the multiplier that would be used for Scheffe 95% familywise intervals for 5 comparisons based on this data set.**
+
+```{r}
+
+```
+
+**6. Find familywise 95% confidence intervals.**
+
+The code below finds individual 95% confidence intervals for the 6 possible pairwise differences in group means for this study.  For each, add calculations of appropriately adjusted Bonferroni and Scheffe familywise intervals.
+
+**(a) $H_0: \mu_1 = \mu_2$ vs $H_A: \mu_1 \neq \mu_2$.  Are the population mean bacterial counts the same for the Alcohol and Antibacterial groups?**
+
+```{r}
+fit_full <- lm(bacterial_counts ~ method, data=soap)
+
+## Individual
+fit.contrast(fit_full, "method", c(1, -1, 0, 0), conf=0.95)
+
+## Bonferroni
+
+## Scheffe
+
+```
+
+**(b) $H_0: \mu_1 = \mu_3$ vs $H_A: \mu_1 \neq \mu_3$.  Are the population mean bacterial counts the same for the Alcohol and Soap groups?**
+
+```{r}
+## Individual
+fit.contrast(fit_full, "method", c(1, 0, -1, 0), conf=0.95)
+
+## Bonferroni
+
+## Scheffe
+
+```
+
+**(c) $H_0: \mu_1 = \mu_4$ vs $H_A: \mu_1 \neq \mu_4$.  Are the population mean bacterial counts the same for the Alcohol and Water groups?**
+
+```{r}
+## Individual
+fit.contrast(fit_full, "method", c(1, 0, 0, -1), conf=0.95)
+
+## Bonferroni
+
+## Scheffe
+
+```
+
+**(d) $H_0: \mu_2 = \mu_3$ vs $H_A: \mu_2 \neq \mu_3$.  Are the population mean bacterial counts the same for the Antibacterial and Soap groups?**
+
+```{r}
+## Individual
+fit.contrast(fit_full, "method", c(0, 1, -1, 0), conf=0.95)
+
+## Bonferroni
+
+## Scheffe
+
+```
+
+**(e) $H_0: \mu_2 = \mu_4$ vs $H_A: \mu_2 \neq \mu_4$.  Are the population mean bacterial counts the same for the Antibacterial and Water groups?**
+
+```{r}
+## Individual
+fit.contrast(fit_full, "method", c(1, 0, 0, -1), conf=0.95)
+
+## Bonferroni
+
+## Scheffe
+
+```
+
+**(f) $H_0: \mu_3 = \mu_4$ vs $H_A: \mu_3 \neq \mu_4$.  Are the population mean bacterial counts the same for the Soap and Water groups?**
+
+```{r}
+## Individual
+fit.contrast(fit_full, "method", c(0, 0, 1, -1), conf=0.95)
+
+## Bonferroni
+
+## Scheffe
+
+```
